@@ -44,10 +44,12 @@ public class Main extends Application
 
         Button refreshBtn = new Button("Refresh");
         Button addKcalBtn = new Button("Add calories");
+        TextField quickCalories = new TextField("Quick calories");
         TilePane r = new TilePane();
         r.getChildren().add(refreshBtn);
         r.getChildren().add(addKcalBtn);
         r.getChildren().add(caloriesField);
+        r.getChildren().add(quickCalories);
         Scene scene = new Scene(r, 200, 100);
         primaryStage.setScene(scene);
         primaryStage.show();
@@ -92,66 +94,3 @@ public class Main extends Application
     }
 }
 
-class Connector
-{
-    private CloseableHttpClient httpclient = HttpClients.createDefault();
-    private String token = this.retrieveToken();
-    private String path = System.getenv("PATH");
-
-    public Connector()
-    {
-
-    }
-
-    public String retrieveToken()
-    {
-        String configFilePath = System.getProperty("user.home") + "/.ffl.conf";
-        String token = "";
-        try {
-            FileReader fr = new FileReader(configFilePath);
-            token = "";
-            BufferedReader br = new BufferedReader(fr);
-            token = br.readLine();
-        } catch (Exception e) {
-            token = "";
-        }
-        return token;
-    }
-
-    public String getCaloriesOut()
-    {
-        String pattern = "yyyy-MM-dd";
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
-        String todaysDate = simpleDateFormat.format(new Date());
-        //System.out.println(todaysDate);
-        HttpGet request = new HttpGet("https://api.fitbit.com/1/user/-/activities/date/" + todaysDate + ".json");
-
-        request.setHeader(HttpHeaders.CONTENT_TYPE, "application/json");
-        request.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + token);
-
-        try {
-            CloseableHttpResponse response = httpclient.execute(request);
-            //String responseBody = response.getStatusLine();
-            //System.out.println(response.getStatusLine());
-            HttpEntity entity = response.getEntity();
-            //System.out.println(entity);
-            Header headers = entity.getContentType();
-            //System.out.println(headers);
-
-            if (entity != null) {
-                // return it as a String
-                String result = EntityUtils.toString(entity);
-
-                JSONObject obj = new JSONObject(result);
-
-                JSONObject summary = (JSONObject) obj.get("summary");
-                return summary.get("caloriesOut").toString();
-            }
-        } catch (Exception e) {
-            System.out.println("Error " + e);
-            return null;
-        }
-        return null;
-    }
-
-}
