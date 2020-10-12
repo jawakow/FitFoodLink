@@ -3,6 +3,7 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpHeaders;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
@@ -38,6 +39,20 @@ class Connector
         }
         return token;
     }
+    public String getTodaysDate()
+    {
+        String pattern = "yyyy-MM-dd";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+        return simpleDateFormat.format(new Date());
+        
+    }
+
+    public void addQuickCalories(double calories)
+    {
+        HttpPost httpPost = new HttpPost("https://api.fitbit.com/1/user/-/foods/log.json");
+
+    }
+
 
     public String getCaloriesOut()
     {
