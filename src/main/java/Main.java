@@ -32,6 +32,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimerTask;
 
+import static java.lang.Integer.parseInt;
+
 public class Main extends Application
 {
     public Label caloriesField;
@@ -44,12 +46,12 @@ public class Main extends Application
 
         Button refreshBtn = new Button("Refresh");
         Button addKcalBtn = new Button("Add calories");
-        TextField quickCalories = new TextField("Quick calories");
+        TextField quickCaloriesTxt = new TextField("Quick calories");
         TilePane r = new TilePane();
         r.getChildren().add(refreshBtn);
         r.getChildren().add(addKcalBtn);
         r.getChildren().add(caloriesField);
-        r.getChildren().add(quickCalories);
+        r.getChildren().add(quickCaloriesTxt);
         Scene scene = new Scene(r, 200, 100);
         primaryStage.setScene(scene);
         primaryStage.show();
@@ -80,7 +82,8 @@ public class Main extends Application
         {
             public void handle(Event event)
             {
-
+                FoodLogger foodLogger = new FoodLogger();
+                foodLogger.AddQuickCalories("Anytime", Integer.parseInt(quickCaloriesTxt.getText()), Helpers.getTodaysDate());
             }
         });
     }

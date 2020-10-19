@@ -44,13 +44,11 @@ class Connector
         String pattern = "yyyy-MM-dd";
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
         return simpleDateFormat.format(new Date());
-        
     }
 
     public void addQuickCalories(double calories)
     {
         HttpPost httpPost = new HttpPost("https://api.fitbit.com/1/user/-/foods/log.json");
-
     }
 
 
